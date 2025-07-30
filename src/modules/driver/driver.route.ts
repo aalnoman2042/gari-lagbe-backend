@@ -1,6 +1,7 @@
 import express from "express";
 import { DriverControllers } from "./driver.controller";
-import { authenticate, authorizeDriver } from "../auth/auth.middleware";
+import { authenticate, authorizeDriver } from "../../middlewares/auth.middleware";
+
 
 export const driverRouter = express.Router();
 

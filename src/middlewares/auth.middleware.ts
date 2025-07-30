@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { envVars } from "../../config/env";
+import { envVars } from "../config/env";
+
 
 export interface AuthRequest extends Request {
   user?: any;
