@@ -36,35 +36,38 @@ const getDriverEarnings = async (req: Request, res: Response) => {
 };
 const updateRideStatus = async (req: Request, res: Response) => {
   try {
-       const token = req.headers.authorization
+    const token = req.headers.authorization;
 
-       if (!token) {
+    if (!token) {
       return res.status(401).json({ message: "Unauthorized: No token provided" });
     }
-     const decoded = jwt.verify(token, envVars.JWT_ACCESS_SECRET) as { id: string; role: string };
 
-     if (decoded.role !== "driver") {
+    const decoded = jwt.verify(token, envVars.JWT_ACCESS_SECRET) as { id: string; role: string };
+
+    if (decoded.role !== "driver") {
       return res.status(403).json({ message: "Only drivers can accept rides" });
     }
 
-    const ride = await driverServices.updateRideStatus(req.params.id, decoded.id, req.body.status);
-
-    // Step 1: Check if driver already has an active ride
+    // Check active rides excluding the current one
     const activeRide = await Ride.findOne({
       driver: decoded.id,
       status: { $in: ["accepted", "in-transit"] },
+      _id: { $ne: req.params.id }
     });
 
     if (activeRide) {
       return res.status(400).json({ message: "You already have an active ride" });
     }
 
-    
+    // Now update status
+    const ride = await driverServices.updateRideStatus(req.params.id, decoded.id, req.body.status);
+
     res.json({ success: true, data: ride });
-  } catch (error : any) {
-    res.status(StatusCodes.BAD_REQUEST).json({ success: false, error: error.message  });
+  } catch (error: any) {
+    res.status(StatusCodes.BAD_REQUEST).json({ success: false, error: error.message });
   }
 };
+
 export const DriverControllers = {
   updateAvailability,
   updateRideStatus,

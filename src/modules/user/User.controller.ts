@@ -15,8 +15,14 @@ const createUser = async (req: Request, res: Response) => {
       envVars.JWT_ACCESS_SECRET as string,
       { expiresIn: envVars.JWT_ACCESS_EXPIRES  } as jwt.SignOptions
     );
+
+     const refreshToken = jwt.sign(
+        { id: user._id, role: user.role },
+        envVars.JWT_REFRESH_SECRET,
+        { expiresIn: envVars.JWT_REFRESH_EXPIRES } as jwt.SignOptions
+      );
     // set cookie
-    setAuthCookie(res ,{accessToken})
+    setAuthCookie(res ,{accessToken, refreshToken})
     res.status(StatusCodes.CREATED).json({
       success: true,
       statusCode: StatusCodes.CREATED,

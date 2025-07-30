@@ -19,34 +19,53 @@ const updateRideStatus = async (
   const ride = await Ride.findById(rideId);
   if (!ride) throw new Error("Ride not found");
 
+  // ✅ 1. If status is 'accepted', check driver's eligibility first
   if (status === "accepted") {
-    // শুধুমাত্র requested থেকে accepted
+    // 🔍 Fetch the driver
+    const driver = await User.findById(driverId);
+    
+    
+    if (!driver) throw new Error("Driver not found");
+
+    // ❌ Check for unapproved or suspended
+    if (!driver.approved || driver.status === "suspended") {
+      throw new Error("Driver not eligible to accept rides");
+    }
+
     if (ride.status !== "requested") {
       throw new Error("Ride cannot be accepted at this stage");
     }
+
     ride.driver = new Types.ObjectId(driverId);
     ride.status = "accepted";
     ride.acceptedAt = new Date();
-  } else if (status === "in_transit") {
-    // শুধুমাত্র accepted driver in_transit করতে পারবে
+  }
+
+  // ✅ 2. If status is 'in_transit'
+  else if (status === "in_transit") {
     if (ride.status !== "accepted") {
-      throw new Error("Ride must be accepted before in_transit");
+      throw new Error("you have already accepted the ride");
     }
     if (!ride.driver || ride.driver.toString() !== driverId) {
       throw new Error("Driver not authorized for this ride");
     }
     ride.status = "in_transit";
-  } else if (status === "completed") {
-    // শুধুমাত্র in_transit driver complete করতে পারবে
+  }
+
+  // ✅ 3. If status is 'completed'
+  else if (status === "completed") {
     if (ride.status !== "in_transit") {
-      throw new Error("Ride must be in transit to complete");
+      throw new Error("you have completed the ride");
     }
     if (!ride.driver || ride.driver.toString() !== driverId) {
       throw new Error("Driver not authorized for this ride");
     }
     ride.status = "completed";
     ride.completedAt = new Date();
-  } else {
+  }
+
+  // ❌ Invalid status
+  else {
     throw new Error("Invalid status transition");
   }
 
