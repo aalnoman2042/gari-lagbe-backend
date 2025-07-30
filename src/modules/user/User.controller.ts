@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import { userServices } from "./user.service";
 import { envVars } from "../../config/env";
 import jwt from "jsonwebtoken"
+import { setAuthCookie } from "../../utils/setAuthToken";
 
 const createUser = async (req: Request, res: Response) => {
   try {
@@ -14,7 +15,8 @@ const createUser = async (req: Request, res: Response) => {
       envVars.JWT_ACCESS_SECRET as string,
       { expiresIn: envVars.JWT_ACCESS_EXPIRES  } as jwt.SignOptions
     );
-    
+    // set cookie
+    setAuthCookie(res ,{accessToken})
     res.status(StatusCodes.CREATED).json({
       success: true,
       statusCode: StatusCodes.CREATED,
