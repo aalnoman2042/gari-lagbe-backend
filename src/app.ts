@@ -4,6 +4,8 @@ import cors from "cors";
 
 import dotenv from "dotenv";
 import { router } from "./routes";
+import { globalErrorHandler } from "./middlewares/globalErrorHandlers";
+import { notFound } from "./middlewares/NotFound";
 
 dotenv.config();
 
@@ -23,5 +25,9 @@ app.get("/", (req, res) => {
 
 // root route
 app.use("/gari-lagbe/v1", router);
+
+
+app.use(notFound)
+app.use(globalErrorHandler)
 
 export default app;
