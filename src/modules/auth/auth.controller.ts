@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { authServices } from "./auth.service";
 import { setAuthCookie } from "../../utils/setAuthToken";
+import httpStatus from "http-status-codes"
 
 
 const loginUser = async (req: Request, res: Response) => {
@@ -30,7 +31,34 @@ const loginUser = async (req: Request, res: Response) => {
     });
   }
 };
+const logout  = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    res.clearCookie("accessToken", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax"
+    })
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax"
+    })
+ 
+
+    res.status(200).json({
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "loged out successful",
+      data: null,
+  });
+  } catch (error) {
+    // console.error("Login Error:", error);
+    next(error);
+  }
+};
+
 
 export const AuthControllers = {
   loginUser,
+  logout
 };
