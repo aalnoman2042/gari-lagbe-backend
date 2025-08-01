@@ -1,0 +1,529 @@
+{
+	"info": {
+		"_postman_id": "77e6fcdf-610d-4cb4-b42c-1994b2c89789",
+		"name": "GARI-LAGBE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45542622",
+		"_collection_link": "https://rohan-3064437.postman.co/workspace/rohan's-Workspace~140fdc9f-47b2-47e7-8001-f21bdb6837e1/collection/45542622-77e6fcdf-610d-4cb4-b42c-1994b2c89789?action=share&source=collection_link&creator=45542622"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "register user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"kala\",\r\n  \"email\": \"kala@example.com\",\r\n  \"password\": \"rohan2042\"\r\n\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/gari-lagbe/v1/user/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"gari-lagbe",
+								"v1",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ride",
+			"item": [
+				{
+					"name": "request a ride",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"rider\": \"6888c48db25aa1c465be17a3\",\r\n  \"pickupLocation\": \"Chawkbazar, Chattogram\",\r\n  \"destination\": \"GEC Circle, Chattogram\",\r\n  \"fare\": 250\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/gari-lagbe/v1/ride/request",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"gari-lagbe",
+								"v1",
+								"ride",
+								"request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cancel a ride",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "rider history",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Driver",
+			"item": [
+				{
+					"name": "driver online status",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"onlineStatus\": true\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/gari-lagbe/v1/driver/availability/6888c450b25aa1c465be17a1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"gari-lagbe",
+								"v1",
+								"driver",
+								"availability",
+								"6888c450b25aa1c465be17a1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "accept a ride",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODkyMGRhZDgwZDA5ZDNlYTRmNWU5NiIsInJvbGUiOiJkcml2ZXIiLCJpYXQiOjE3NTM4MTc3NzcsImV4cCI6MTc1MzkwNDE3N30.xhPZ0EQnV7o1tSZS18TuLEnbQ7a-Sk8p7uVZ5N2RivA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"driverId\": \"688920dad80d09d3ea4f5e96\",\r\n  \"status\": \"accepted\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/gari-lagbe/v1/ride/status/688921f97fd005c9dfcf7c15",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"gari-lagbe",
+								"v1",
+								"ride",
+								"status",
+								"688921f97fd005c9dfcf7c15"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "driver history",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/gari-lagbe/v1/ride/driver/6888c450b25aa1c465be17a1/history",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"gari-lagbe",
+								"v1",
+								"ride",
+								"driver",
+								"6888c450b25aa1c465be17a1",
+								"history"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "driver Earnings history",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/gari-lagbe/v1/driver/driver-earnings/6888c450b25aa1c465be17a1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"gari-lagbe",
+								"v1",
+								"driver",
+								"driver-earnings",
+								"6888c450b25aa1c465be17a1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "suspend Driver",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\" : \"suspend\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/gari-lagbe/v1/admin/drivers/6888c48db25aa1c465be17a3/suspend",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"gari-lagbe",
+								"v1",
+								"admin",
+								"drivers",
+								"6888c48db25aa1c465be17a3",
+								"suspend"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "approve Driver",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/gari-lagbe/v1/admin/drivers/6888c450b25aa1c465be17a1/approve",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"gari-lagbe",
+								"v1",
+								"admin",
+								"drivers",
+								"6888c450b25aa1c465be17a1",
+								"approve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "block a user",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/gari-lagbe/v1/admin/users/6888c450b25aa1c465be17a1/block",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"gari-lagbe",
+								"v1",
+								"admin",
+								"users",
+								"6888c450b25aa1c465be17a1",
+								"block"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "unblock a user",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/gari-lagbe/v1/admin/users/6888c450b25aa1c465be17a1/unblock",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"gari-lagbe",
+								"v1",
+								"admin",
+								"users",
+								"6888c450b25aa1c465be17a1",
+								"unblock"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getting all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/gari-lagbe/v1/admin/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"gari-lagbe",
+								"v1",
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getting all drivers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/gari-lagbe/v1/admin/drivers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"gari-lagbe",
+								"v1",
+								"admin",
+								"drivers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getting all rides",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/gari-lagbe/v1/admin/drivers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"gari-lagbe",
+								"v1",
+								"admin",
+								"drivers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getting all Riders",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODkxYjQ4ZmMzMjVhYjI0ODQwZmQxZCIsInJvbGUiOiJyaWRlciIsImlhdCI6MTc1MzgxNTkxNSwiZXhwIjoxNzUzOTAyMzE1fQ.tp_rdiLG1DtRLhw4nzcwqeWBf1RYVY3jKwjhpmWJrGA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/gari-lagbe/v1/admin/riders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"gari-lagbe",
+								"v1",
+								"admin",
+								"riders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "status update of user",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGE3MzE0ZjllMGNiNDI1MTFjYzEzNyIsInJvbGUiOiJyaWRlciIsImlhdCI6MTc1NDA2MzkzMSwiZXhwIjoxNzU0MTUwMzMxfQ.D_jM98oUi9kxwYx-4Pg3BYYpLy3optJK3KcihtrRUFM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"block\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/gari-lagbe/v1/user/status/688a762a5f472a422714f7ba",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"gari-lagbe",
+								"v1",
+								"user",
+								"status",
+								"688a762a5f472a422714f7ba"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \r\n  \"email\": \"kala@example.com\",\r\n  \"password\": \"rohan2042\"\r\n\r\n}\r\n"
+						},
+						"url": {
+							"raw": "http://localhost:5000/gari-lagbe/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"gari-lagbe",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \r\n  \"email\": \"kala@example.com\",\r\n  \"password\": \"rohan2042\"\r\n\r\n}\r\n"
+						},
+						"url": {
+							"raw": "http://localhost:5000/gari-lagbe/v1/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"gari-lagbe",
+								"v1",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

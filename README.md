@@ -111,6 +111,9 @@ Secure password storage with hashing
 
 Middleware-based route protection based on roles
 
+
+api = https://gari-lagbe-backend.vercel.app/gari-lagbe
+
 📜 API Endpoints (Sample)
     🔐 Auth
 POST /api/v1/auth/register

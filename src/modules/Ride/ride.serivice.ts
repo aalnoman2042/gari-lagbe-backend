@@ -35,7 +35,7 @@ const cancelRide = async (rideId: string, token: string) => {
   }
 
   ride.status = "cancelled";
-  ride.completedAt = new Date(); // cancel time log করতে পারো
+  ride.completedAt = new Date(); 
   return await ride.save();
 };
 
