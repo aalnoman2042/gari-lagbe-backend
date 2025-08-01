@@ -112,35 +112,47 @@ Secure password storage with hashing
 Middleware-based route protection based on roles
 
 📜 API Endpoints (Sample)
-🔐 Auth
+    🔐 Auth
 POST /api/v1/auth/register
 
 POST /api/v1/auth/login
-
-
 
 POST /api/v1/auth/logout
 
 👤 User
 GET /api/v1/users/me – Authenticated user info
 
-PATCH /api/v1/users/block/:id – Admin only
+PATCH /api/v1/users/block/:id – Admin only 
 
 🧍 Driver
-PATCH /api/v1/drivers/approve/:id – Admin only
+PATCH /api/v1/drivers/:id/approve – Admin only
 
-PATCH /api/v1/drivers/availability – Driver only
+PATCH api/v1/driver/availability/:id - driver only 
 
-GET /api/v1/drivers/rides – Driver’s ride history
+PATCH api/v1/driver/ride-status/:id - accept/transit/complete ride
+
+GET api/v1/driver/driver-earnings/:id
+
+GET api/v1/driver/:id/history – Driver’s ride history
 
 🚘 Ride
 POST /api/v1/rides/request – Rider only
 
 PATCH /api/v1/rides/cancel/:id – Rider only
 
-PATCH /api/v1/rides/status/:id – Driver updates
+GET /api/v1/rides/history – Rider  history 
 
-GET /api/v1/rides/history – Rider or driver history
+👤 ADMIN
+PATCH /api/v1/user/status/:id  - admin
+PATCH /api/v1/admin/drivers/:id/suspend -admin
+PATCH /api/v1/admin/drivers/:id/approve -admin
+PATCH /api/v1/admin/users/:id/block -admin
+PATCH /api/v1/admin/users/:id/unblock -admin
+GET /api/v1/admin/users -admin
+GET /api/v1/admin/drivers -admin
+GET /api/v1/admin/rides -admin
+GET /api/v1/admin/riders -admin 
+
 
 
 
