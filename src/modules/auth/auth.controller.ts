@@ -7,6 +7,8 @@ import httpStatus from "http-status-codes"
 
 const loginUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
+  
+  
 
   try {
     const {user, accessToken, refreshToken} = await authServices.login(email, password);
@@ -35,13 +37,13 @@ const logout  = async (req: Request, res: Response, next: NextFunction) => {
   try {
     res.clearCookie("accessToken", {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax"
+      secure: true,
+      sameSite: "none"
     })
     res.clearCookie("refreshToken", {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax"
+      secure: true,
+      sameSite: "none"
     })
  
 

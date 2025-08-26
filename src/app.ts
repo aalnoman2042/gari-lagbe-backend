@@ -6,15 +6,20 @@ import dotenv from "dotenv";
 import { router } from "./routes";
 import { globalErrorHandler } from "./middlewares/globalErrorHandlers";
 import { notFound } from "./middlewares/NotFound";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
 const app = express();
 
 // Middleware
-app.use(cors());
+const corsOptions = {
+  origin: 'http://localhost:5173', // Replace with your frontend URL
+  credentials: true, // This is the key to allow cookies
+};
+app.use(cors(corsOptions));
+app.use(cookieParser());
 app.use(express.json());
-
 
 
 

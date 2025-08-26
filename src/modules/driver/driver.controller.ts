@@ -36,7 +36,7 @@ const getDriverEarnings = async (req: Request, res: Response) => {
 };
 const updateRideStatus = async (req: Request, res: Response) => {
   try {
-    const token = req.headers.authorization;
+    const token = req.headers.authorization || req.cookies.accessToken;
 
     if (!token) {
       return res.status(401).json({ message: "Unauthorized: No token provided" });

@@ -26,13 +26,13 @@ const updateRideStatus = (rideId, driverId, status) => __awaiter(void 0, void 0,
     const ride = yield ride_model_1.Ride.findById(rideId);
     if (!ride)
         throw new Error("Ride not found");
-    // ✅ 1. If status is 'accepted', check driver's eligibility first
+    //  If status is 'accepted', check driver's eligibility first
     if (status === "accepted") {
         // 🔍 Fetch the driver
         const driver = yield User_model_1.User.findById(driverId);
         if (!driver)
             throw new Error("Driver not found");
-        // ❌ Check for unapproved or suspended
+        // Check for unapproved or suspended
         if (!driver.approved || driver.status === "suspended") {
             throw new Error("Driver not eligible to accept rides");
         }
@@ -43,7 +43,7 @@ const updateRideStatus = (rideId, driverId, status) => __awaiter(void 0, void 0,
         ride.status = "accepted";
         ride.acceptedAt = new Date();
     }
-    // ✅ 2. If status is 'in_transit'
+    //  If status is 'in_transit'
     else if (status === "in_transit") {
         if (ride.status !== "accepted") {
             throw new Error("you have already accepted the ride");
@@ -53,10 +53,10 @@ const updateRideStatus = (rideId, driverId, status) => __awaiter(void 0, void 0,
         }
         ride.status = "in_transit";
     }
-    // ✅ 3. If status is 'completed'
+    //  If status is 'completed'
     else if (status === "completed") {
         if (ride.status !== "in_transit") {
-            throw new Error("you have completed the ride");
+            throw new Error("you have to be in transit first");
         }
         if (!ride.driver || ride.driver.toString() !== driverId) {
             throw new Error("Driver not authorized for this ride");
@@ -64,7 +64,7 @@ const updateRideStatus = (rideId, driverId, status) => __awaiter(void 0, void 0,
         ride.status = "completed";
         ride.completedAt = new Date();
     }
-    // ❌ Invalid status
+    //  Invalid status
     else {
         throw new Error("Invalid status transition");
     }

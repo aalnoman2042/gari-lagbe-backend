@@ -8,11 +8,14 @@ const router = express.Router();
 router.post("/register", UserControllers.createUser);
 
 
+
 router.patch(
   "/status/:id",
   authenticate,
   authorizeAdmin,
   UserControllers.updateUserStatus
 );
+
+router.get("/me",  UserControllers.getMe)
 
 export const userRouter = router;

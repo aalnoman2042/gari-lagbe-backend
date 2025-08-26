@@ -38,7 +38,7 @@ const cancelRide = (rideId, token) => __awaiter(void 0, void 0, void 0, function
         throw new Error("Ride cannot be cancelled at this stage");
     }
     ride.status = "cancelled";
-    ride.completedAt = new Date(); // cancel time log করতে পারো
+    ride.completedAt = new Date();
     return yield ride.save();
 });
 const getRiderHistory = (riderId) => __awaiter(void 0, void 0, void 0, function* () {

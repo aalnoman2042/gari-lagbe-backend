@@ -11,6 +11,8 @@ const createUser = async (payload: Partial<IUser>): Promise<IUser> => {
   }
 
   const user = new User(payload);
+  
+  
   return await user.save();
 }
 
@@ -19,12 +21,18 @@ const updateUserStatus = async (id: string, status: "active" | "blocked") => {
   return await User.findByIdAndUpdate(id, { status }, { new: true });
 };
 
-
+const getMe = async (id: string) => {
+  // console.log(id);
+  
+    const user = await User.findById(id).select("-password");
+    return {
+        data: user
+    }
+};
 
 
 export const userServices = {
   createUser,
-//    getAllUsers,
- 
+getMe,
   updateUserStatus,
 };
