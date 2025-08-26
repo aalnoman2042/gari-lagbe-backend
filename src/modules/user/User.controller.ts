@@ -4,6 +4,8 @@ import { userServices } from "./user.service";
 import { envVars } from "../../config/env";
 import jwt, { JwtPayload } from "jsonwebtoken"
 import { setAuthCookie } from "../../utils/setAuthToken";
+import bcrypt from "bcryptjs"
+import { User } from "./User.model";
 
 const createUser = async (req: Request, res: Response) => {
   try {
@@ -83,10 +85,52 @@ const getMe = async (req: Request, res: Response) => {
   }
 };
 
+const updateUser = async (req: Request, res: Response) => {
+  console.log("hitted");
+
+  const { oldPassword, newPassword, ...updateData } = req.body; // destructure
+  const token = req.cookies.accessToken || (req.headers.authorization as string);
+  const decodedToken = jwt.verify(token, envVars.JWT_ACCESS_SECRET) as JwtPayload;
+
+  try {
+    // DB থেকে ইউজার বের করো
+    const user = await User.findById(decodedToken.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // যদি password update করতে চায়
+    if (newPassword) {
+      // old password check
+      const isMatch = await bcrypt.compare(oldPassword, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ message: "Old password is incorrect" });
+      }
+
+      // নতুন password hash করে দাও
+      const saltRounds = parseInt(envVars.BCRYPT_SALT_ROUND, 10);
+      updateData.password = await bcrypt.hash(newPassword, saltRounds);
+    }
+
+    // Update user
+    const updatedUser = await userServices.updateUserService(decodedToken.id, updateData);
+
+    return res.status(200).json({
+      message: "User updated successfully",
+      data: updatedUser,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+
 
 export const UserControllers = {
   createUser,
   
 getMe,
   updateUserStatus,
+  updateUser
 };

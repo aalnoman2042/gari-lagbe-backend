@@ -6,12 +6,12 @@ import httpStatus from "http-status-codes"
 
 
 const loginUser = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  const { email, password, role } = req.body;
   
   
 
   try {
-    const {user, accessToken, refreshToken} = await authServices.login(email, password);
+    const {user, accessToken, refreshToken} = await authServices.login(email, password, role);
 
     setAuthCookie(res, {accessToken, refreshToken})
 

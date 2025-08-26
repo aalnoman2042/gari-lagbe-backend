@@ -17,8 +17,8 @@ const createUser = async (payload: Partial<IUser>): Promise<IUser> => {
 }
 
 
-const updateUserStatus = async (id: string, status: "active" | "blocked") => {
-  return await User.findByIdAndUpdate(id, { status }, { new: true });
+const updateUserStatus = async (_id: string, status: "active" | "blocked") => {
+  return await User.findByIdAndUpdate(_id, { status }, { new: true });
 };
 
 const getMe = async (id: string) => {
@@ -29,10 +29,25 @@ const getMe = async (id: string) => {
         data: user
     }
 };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const updateUserService = async (userId: string, updateData: any) => {
+  try {
+    // Find user by ID and update with new data
+    const updatedUser = await User.findByIdAndUpdate(userId, updateData, { new: true });
+
+    return {
+      data: updatedUser
+    }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (err) {
+    throw new Error('Error updating user: ' );
+  }
+};
 
 
 export const userServices = {
   createUser,
 getMe,
   updateUserStatus,
+  updateUserService
 };

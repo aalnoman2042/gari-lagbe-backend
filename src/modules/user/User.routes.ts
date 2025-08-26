@@ -17,5 +17,7 @@ router.patch(
 );
 
 router.get("/me",  UserControllers.getMe)
+router.patch("/updateUser",  UserControllers.updateUser)
+
 
 export const userRouter = router;

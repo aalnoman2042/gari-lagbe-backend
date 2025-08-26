@@ -8,11 +8,10 @@ import { Ride } from "../Ride/ride.model";
 
 const updateAvailability = async (req: Request, res: Response) => {
   try {
-    const { onlineStatus } = req.body;
+    // const { onlineStatus } = req.body;
     const driverId = req.params.id;
 
-    const driver = await driverServices.updateAvailability(driverId, 
-onlineStatus);
+    const driver = await driverServices.updateAvailability(driverId);
     res.status(200).json({ success: true, data: driver });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
@@ -35,6 +34,9 @@ const getDriverEarnings = async (req: Request, res: Response) => {
   }
 };
 const updateRideStatus = async (req: Request, res: Response) => {
+  const data = req.body
+  console.log(data);
+  
   try {
     const token = req.headers.authorization || req.cookies.accessToken;
 
@@ -68,9 +70,34 @@ const updateRideStatus = async (req: Request, res: Response) => {
   }
 };
 
+const getRequestedRides = async (req: Request, res: Response) => {
+  try {
+    const token = req.headers.authorization || req.cookies.accessToken;
+
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized: No token provided" });
+    }
+
+    const decoded = jwt.verify(token, envVars.JWT_ACCESS_SECRET) as { id: string; role: string };
+
+    if (decoded.role !== "driver") {
+      return res.status(403).json({ message: "Only drivers can view requested rides" });
+    }
+
+    // শুধু যেগুলো "requested" status এ আছে
+    const requestedRides = await Ride.find({ status: "requested" }).populate("rider", "name email");
+
+    res.status(200).json({ success: true, data: requestedRides });
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 export const DriverControllers = {
   updateAvailability,
   updateRideStatus,
   getDriverEarnings,
-  getDriverHistory
+  getDriverHistory,
+  getRequestedRides
 };

@@ -3,14 +3,19 @@ import jwt from "jsonwebtoken"
 import { User } from "../user/User.model";
 import bcrypt from "bcryptjs"
 
- const login = async (email: string, password: string) => {
+ const login = async (email: string, password: string, role: string) => {
   const user = await User.findOne({ email });
+  const registerdRole = user?.role
   
   
   if (!user) throw new Error("user does not exist, please sign up first");
 
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) throw new Error("Invalid password");
+
+  if(registerdRole != role){
+    throw new Error(`you are not ${role}`);
+  }
 
   const accessToken = jwt.sign(
     { id: user._id, role: user.role },

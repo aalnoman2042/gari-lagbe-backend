@@ -6,8 +6,13 @@ const approveDriver = async (driverId: string) => {
   if (!driver) throw new Error("Driver not found");
   if (driver.role !== "driver") throw new Error("User is not a driver");
 
-  driver.approved = true;
-  driver.status = "active";
+  if(driver.approved ){
+    driver.approved = false
+  }
+  else{
+    driver.approved = true
+  }
+ 
   return await driver.save();
 };
 

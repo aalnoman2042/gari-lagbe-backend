@@ -4,8 +4,12 @@ import { rideServices } from "./ride.serivice";
 import { StatusCodes } from "http-status-codes";
 
 const requestRide = async (req: Request, res: Response) => {
+ 
+  
   try {
-    const ride = await rideServices.requestRide(req.body, req.headers.authorization as string);
+    const ride = await rideServices.requestRide(req.body, req.headers.authorization || req.cookies.accessToken as string);
+  
+    
     res.status(StatusCodes.CREATED).json({ success: true, data: ride });
   } catch (error : any) {
     res.status(StatusCodes.BAD_REQUEST).json({ success: false, error: error.message });
@@ -14,7 +18,7 @@ const requestRide = async (req: Request, res: Response) => {
 
 const cancelRide = async (req: Request, res: Response) => {
   try {
-    const ride = await rideServices.cancelRide(req.params.id, req.headers.authorization as string);
+    const ride = await rideServices.cancelRide(req.params.id, req.headers.authorization || req.cookies.accessToken as string);
     // console.log(ride);
     
     res.json({ success: true, data: ride });
