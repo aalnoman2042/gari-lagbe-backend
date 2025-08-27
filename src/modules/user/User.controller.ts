@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { userServices } from "./user.service";
@@ -75,7 +77,7 @@ const getMe = async (req: Request, res: Response) => {
       data: result.data,
     });
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   } catch (error) {
     // Handle errors (e.g., token invalid/expired)
     return res.status(401).json({
@@ -86,7 +88,7 @@ const getMe = async (req: Request, res: Response) => {
 };
 
 const updateUser = async (req: Request, res: Response) => {
-  console.log("hitted");
+  
 
   const { oldPassword, newPassword, ...updateData } = req.body; // destructure
   const token = req.cookies.accessToken || (req.headers.authorization as string);
@@ -120,10 +122,74 @@ const updateUser = async (req: Request, res: Response) => {
       data: updatedUser,
     });
   } catch (err) {
-    console.error(err);
+    
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+
+ const updateSOSContacts= async (req: Request, res: Response) => {
+  console.log(req.body);
+
+  const SOSContacts = req.body
+  
+  const token = req.cookies.accessToken || (req.headers.authorization as string);
+  const decodedToken = jwt.verify(token, envVars.JWT_ACCESS_SECRET) as JwtPayload;
+
+  try {
+    // DB থেকে ইউজার বের করো
+    const user = await User.findById(decodedToken.id);
+    console.log(user);
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update user SOS
+    const updatedUser = await userServices.updateSOSContacts(decodedToken.id, SOSContacts);
+
+    return res.status(200).json({
+      message: "User updated successfully",
+      data: updatedUser,
+    });
+  } catch (err) {
+    
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+  }
+
+  // Trigger SOS during active ride
+  const triggerSOS= async (req: Request, res: Response) => {
+    const token = req.cookies.accessToken || (req.headers.authorization as string);
+  const decodedToken = jwt.verify(token, envVars.JWT_ACCESS_SECRET) as JwtPayload;
+
+    
+    try {
+      const userId = decodedToken.id;
+      const { rideId, location } = req.body; // location: {lat, lng}
+
+      const result = await userServices.triggerSOS(userId, rideId, location);
+
+      res.status(200).json({ success: true, message: result });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: err.message });
+    }
+  }
+
+  // Get user SOS info
+  const getSOSInfo= async (req: Request, res: Response) => {
+  const token = req.cookies.accessToken as string || req.headers.authorization as string;
+  const decodedToken = jwt.verify(token, envVars.JWT_ACCESS_SECRET) as JwtPayload;
+    try {
+      const userId = decodedToken.id;
+
+      const sosInfo = await userServices.getSOSInfo(userId);
+
+      res.status(200).json({ success: true, data: sosInfo });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: err.message });
+    }
+  }
 
 
 
@@ -132,5 +198,11 @@ export const UserControllers = {
   
 getMe,
   updateUserStatus,
-  updateUser
+  updateUser,
+
+
+  updateSOSContacts,
+  getSOSInfo,
+  triggerSOS
+
 };

@@ -19,5 +19,13 @@ router.patch(
 router.get("/me",  UserControllers.getMe)
 router.patch("/updateUser",  UserControllers.updateUser)
 
+router.patch(`/updateSOSContacts`,  UserControllers.updateSOSContacts);
+
+// Trigger SOS during an active ride
+router.patch("/triggerSOS", UserControllers.triggerSOS);
+
+// Get user SOS info (optional)
+router.get("/getSOSInfo" , UserControllers.getSOSInfo);
+
 
 export const userRouter = router;

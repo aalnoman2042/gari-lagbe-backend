@@ -17,9 +17,9 @@ const auth_service_1 = require("./auth.service");
 const setAuthToken_1 = require("../../utils/setAuthToken");
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
     try {
-        const { user, accessToken, refreshToken } = yield auth_service_1.authServices.login(email, password);
+        const { user, accessToken, refreshToken } = yield auth_service_1.authServices.login(email, password, role);
         (0, setAuthToken_1.setAuthCookie)(res, { accessToken, refreshToken });
         res.status(200).json({
             success: true,
@@ -41,13 +41,13 @@ const logout = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
     try {
         res.clearCookie("accessToken", {
             httpOnly: true,
-            secure: false,
-            sameSite: "lax"
+            secure: true,
+            sameSite: "none"
         });
         res.clearCookie("refreshToken", {
             httpOnly: true,
-            secure: false,
-            sameSite: "lax"
+            secure: true,
+            sameSite: "none"
         });
         res.status(200).json({
             success: true,

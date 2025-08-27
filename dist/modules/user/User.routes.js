@@ -10,4 +10,11 @@ const auth_middleware_1 = require("../../middlewares/auth.middleware");
 const router = express_1.default.Router();
 router.post("/register", User_controller_1.UserControllers.createUser);
 router.patch("/status/:id", auth_middleware_1.authenticate, auth_middleware_1.authorizeAdmin, User_controller_1.UserControllers.updateUserStatus);
+router.get("/me", User_controller_1.UserControllers.getMe);
+router.patch("/updateUser", User_controller_1.UserControllers.updateUser);
+router.patch(`/updateSOSContacts`, User_controller_1.UserControllers.updateSOSContacts);
+// Trigger SOS during an active ride
+router.patch("/triggerSOS", User_controller_1.UserControllers.triggerSOS);
+// Get user SOS info (optional)
+router.get("/getSOSInfo", User_controller_1.UserControllers.getSOSInfo);
 exports.userRouter = router;

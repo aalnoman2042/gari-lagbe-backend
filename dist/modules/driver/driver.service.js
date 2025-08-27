@@ -13,26 +13,30 @@ exports.driverServices = void 0;
 const mongoose_1 = require("mongoose");
 const ride_model_1 = require("../Ride/ride.model");
 const User_model_1 = require("../user/User.model");
-const updateAvailability = (driverId, onlineStatus) => __awaiter(void 0, void 0, void 0, function* () {
-    const driver = yield User_model_1.User.findById(driverId);
+const updateAvailability = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const driver = yield User_model_1.User.findById(userId);
     if (!driver)
-        throw new Error("Driver not found");
+        throw new Error("user not found");
     if (driver.role !== "driver")
         throw new Error("User is not a driver");
-    driver.onlineStatus = onlineStatus;
+    if (driver.onlineStatus) {
+        driver.onlineStatus = false;
+    }
+    else {
+        driver.onlineStatus = true;
+    }
     return yield driver.save();
 });
 const updateRideStatus = (rideId, driverId, status) => __awaiter(void 0, void 0, void 0, function* () {
     const ride = yield ride_model_1.Ride.findById(rideId);
     if (!ride)
         throw new Error("Ride not found");
-    //  If status is 'accepted', check driver's eligibility first
+    //  If status is 'accepted'
     if (status === "accepted") {
-        // 🔍 Fetch the driver
         const driver = yield User_model_1.User.findById(driverId);
         if (!driver)
             throw new Error("Driver not found");
-        // Check for unapproved or suspended
+        // Check approval & suspension
         if (!driver.approved || driver.status === "suspended") {
             throw new Error("Driver not eligible to accept rides");
         }
@@ -43,20 +47,31 @@ const updateRideStatus = (rideId, driverId, status) => __awaiter(void 0, void 0,
         ride.status = "accepted";
         ride.acceptedAt = new Date();
     }
-    //  If status is 'in_transit'
-    else if (status === "in_transit") {
+    // If status is 'picked_up'
+    else if (status === "picked_up") {
         if (ride.status !== "accepted") {
-            throw new Error("you have already accepted the ride");
+            throw new Error("Ride must be accepted before picking up");
+        }
+        if (!ride.driver || ride.driver.toString() !== driverId) {
+            throw new Error("Driver not authorized for this ride");
+        }
+        ride.status = "picked_up";
+        ride.pickedUpAt = new Date();
+    }
+    // If status is 'in_transit'
+    else if (status === "in_transit") {
+        if (ride.status !== "picked_up") {
+            throw new Error("Ride must be picked up before in transit");
         }
         if (!ride.driver || ride.driver.toString() !== driverId) {
             throw new Error("Driver not authorized for this ride");
         }
         ride.status = "in_transit";
     }
-    //  If status is 'completed'
+    // If status is 'completed'
     else if (status === "completed") {
         if (ride.status !== "in_transit") {
-            throw new Error("you have to be in transit first");
+            throw new Error("Ride must be in transit before completion");
         }
         if (!ride.driver || ride.driver.toString() !== driverId) {
             throw new Error("Driver not authorized for this ride");
@@ -64,7 +79,7 @@ const updateRideStatus = (rideId, driverId, status) => __awaiter(void 0, void 0,
         ride.status = "completed";
         ride.completedAt = new Date();
     }
-    //  Invalid status
+    // Invalid status
     else {
         throw new Error("Invalid status transition");
     }

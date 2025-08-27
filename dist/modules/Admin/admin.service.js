@@ -18,8 +18,12 @@ const approveDriver = (driverId) => __awaiter(void 0, void 0, void 0, function* 
         throw new Error("Driver not found");
     if (driver.role !== "driver")
         throw new Error("User is not a driver");
-    driver.approved = true;
-    driver.status = "active";
+    if (driver.approved) {
+        driver.approved = false;
+    }
+    else {
+        driver.approved = true;
+    }
     return yield driver.save();
 });
 const suspendDriver = (driverId) => __awaiter(void 0, void 0, void 0, function* () {

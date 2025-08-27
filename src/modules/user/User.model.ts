@@ -19,6 +19,16 @@ const userSchema = new Schema<IUser>(
     approved: { type: Boolean, default: false },
     onlineStatus: { type: Boolean, default: false },
     vehicleInfo: { type: String },
+
+    // SOS-related
+    enableSOS: { type: Boolean, default: false },
+emergencyContacts: [
+  {
+    name: { type: String },
+    phone: { type: String },
+    email: { type: String, required: false }
+  }
+]
   },
   { timestamps: true }
 );

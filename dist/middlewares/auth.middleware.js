@@ -7,7 +7,7 @@ exports.authorizeDriver = exports.authorizeRider = exports.authorizeAdmin = expo
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const env_1 = require("../config/env");
 const authenticate = (req, res, next) => {
-    const token = req.headers.authorization;
+    const token = req.headers.authorization || req.cookies.accessToken;
     if (!token)
         return res.status(401).json({ message: "No token provided" });
     try {

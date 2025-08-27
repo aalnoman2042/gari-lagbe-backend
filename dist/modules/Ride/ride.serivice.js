@@ -23,7 +23,7 @@ const requestRide = (payload, token) => __awaiter(void 0, void 0, void 0, functi
         status: { $in: ["requested", "accepted", "in-transit"] },
     });
     if (activeRide) {
-        throw new Error("You already have an active ride. Please complete it before requesting a new one.");
+        throw new Error("You already have an active ride. Please complete it or cancel it before requesting a new one.");
     }
     payload.rider = decodedToken.id;
     const ride = new ride_model_1.Ride(payload);

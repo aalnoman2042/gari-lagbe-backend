@@ -9,10 +9,16 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const routes_1 = require("./routes");
 const globalErrorHandlers_1 = require("./middlewares/globalErrorHandlers");
 const NotFound_1 = require("./middlewares/NotFound");
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 // Middleware
-app.use((0, cors_1.default)());
+const corsOptions = {
+    origin: 'http://localhost:5173', // Replace with your frontend URL
+    credentials: true, // This is the key to allow cookies
+};
+app.use((0, cors_1.default)(corsOptions));
+app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
 // Test route
 app.get("/", (req, res) => {

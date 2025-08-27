@@ -14,7 +14,7 @@ const ride_serivice_1 = require("./ride.serivice");
 const http_status_codes_1 = require("http-status-codes");
 const requestRide = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const ride = yield ride_serivice_1.rideServices.requestRide(req.body, req.headers.authorization);
+        const ride = yield ride_serivice_1.rideServices.requestRide(req.body, req.headers.authorization || req.cookies.accessToken);
         res.status(http_status_codes_1.StatusCodes.CREATED).json({ success: true, data: ride });
     }
     catch (error) {
@@ -23,7 +23,7 @@ const requestRide = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 const cancelRide = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const ride = yield ride_serivice_1.rideServices.cancelRide(req.params.id, req.headers.authorization);
+        const ride = yield ride_serivice_1.rideServices.cancelRide(req.params.id, req.headers.authorization || req.cookies.accessToken);
         // console.log(ride);
         res.json({ success: true, data: ride });
     }

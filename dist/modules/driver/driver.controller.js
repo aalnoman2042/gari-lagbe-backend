@@ -20,9 +20,9 @@ const env_1 = require("../../config/env");
 const ride_model_1 = require("../Ride/ride.model");
 const updateAvailability = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { onlineStatus } = req.body;
+        // const { onlineStatus } = req.body;
         const driverId = req.params.id;
-        const driver = yield driver_service_1.driverServices.updateAvailability(driverId, onlineStatus);
+        const driver = yield driver_service_1.driverServices.updateAvailability(driverId);
         res.status(200).json({ success: true, data: driver });
     }
     catch (error) {
@@ -45,7 +45,7 @@ const getDriverEarnings = (req, res) => __awaiter(void 0, void 0, void 0, functi
 });
 const updateRideStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const token = req.headers.authorization;
+        const token = req.headers.authorization || req.cookies.accessToken;
         if (!token) {
             return res.status(401).json({ message: "Unauthorized: No token provided" });
         }
@@ -70,9 +70,28 @@ const updateRideStatus = (req, res) => __awaiter(void 0, void 0, void 0, functio
         res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json({ success: false, error: error.message });
     }
 });
+const getRequestedRides = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const token = req.headers.authorization || req.cookies.accessToken;
+        if (!token) {
+            return res.status(401).json({ message: "Unauthorized: No token provided" });
+        }
+        const decoded = jsonwebtoken_1.default.verify(token, env_1.envVars.JWT_ACCESS_SECRET);
+        if (decoded.role !== "driver") {
+            return res.status(403).json({ message: "Only drivers can view requested rides" });
+        }
+        // শুধু যেগুলো "requested" status এ আছে
+        const requestedRides = yield ride_model_1.Ride.find({ status: "requested" }).populate("rider", "name email");
+        res.status(200).json({ success: true, data: requestedRides });
+    }
+    catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
 exports.DriverControllers = {
     updateAvailability,
     updateRideStatus,
     getDriverEarnings,
-    getDriverHistory
+    getDriverHistory,
+    getRequestedRides
 };

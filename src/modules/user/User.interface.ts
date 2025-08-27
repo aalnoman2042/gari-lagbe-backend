@@ -9,4 +9,12 @@ export interface IUser extends Document {
   approved?: boolean;
   onlineStatus?: boolean;
   vehicleInfo?: string;
+
+  // SOS fields
+  enableSOS?: boolean; // Optional, default false
+  emergencyContacts?: {
+    name: string;
+    phone: string;
+    email?: string;
+  }[];
 }

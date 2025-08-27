@@ -44,10 +44,63 @@ const updateUserService = async (userId: string, updateData: any) => {
   }
 };
 
+// Update SOS contacts
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const updateSOSContacts=  async (userId: string , sosData: any) => {
+    console.log(sosData);
+    
+    const user = await User.findById(userId);
+    if (!user) throw new Error("User not found");
+
+    if (sosData.enableSOS !== undefined) user.enableSOS = sosData.enableSOS;
+    if (sosData.emergencyContacts) user.emergencyContacts = sosData.emergencyContacts;
+
+    await user.save();
+    return user;
+  }
+
+  // Trigger SOS
+  const triggerSOS= async (userId: string, rideId: string, location: { lat: number; lng: number }) => {
+    const user = await User.findById(userId);
+    if (!user) throw new Error("User not found");
+    if (!user.enableSOS) throw new Error("SOS is not enabled for this user");
+
+    // Here you can integrate:
+    // 1. emailjs / nodemailer for email
+    // 2. twilio / whatsapp-web.js for SMS/WhatsApp
+    // 3. send GPS link in message
+    // 4. log to DB if needed
+
+    // For now just a placeholder
+    console.log("SOS Triggered!", { userId, rideId, location, contacts: user.emergencyContacts });
+
+    return "Emergency contact notified successfully";
+  }
+
+  // Get SOS info
+  const getSOSInfo =  async (userId: string) => {
+    const user = await User.findById(userId);
+    if (!user) throw new Error("User not found");
+
+    return {
+      enableSOS: user.enableSOS,
+      emergencyContacts: user.emergencyContacts || [],
+    };
+  }
+
+
+
 
 export const userServices = {
   createUser,
 getMe,
   updateUserStatus,
-  updateUserService
+  updateUserService,
+
+
+
+
+  getSOSInfo,
+  updateSOSContacts,
+  triggerSOS
 };

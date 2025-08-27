@@ -52,5 +52,14 @@ const userSchema = new mongoose_1.Schema({
     approved: { type: Boolean, default: false },
     onlineStatus: { type: Boolean, default: false },
     vehicleInfo: { type: String },
+    // SOS-related
+    enableSOS: { type: Boolean, default: false },
+    emergencyContacts: [
+        {
+            name: { type: String },
+            phone: { type: String },
+            email: { type: String, required: false }
+        }
+    ]
 }, { timestamps: true });
 exports.User = mongoose_1.default.model("User", userSchema);

@@ -34,8 +34,7 @@ const getDriverEarnings = async (req: Request, res: Response) => {
   }
 };
 const updateRideStatus = async (req: Request, res: Response) => {
-  const data = req.body
-  console.log(data);
+ 
   
   try {
     const token = req.headers.authorization || req.cookies.accessToken;
@@ -89,7 +88,7 @@ const getRequestedRides = async (req: Request, res: Response) => {
 
     res.status(200).json({ success: true, data: requestedRides });
   } catch (error: any) {
-    console.error(error);
+   
     res.status(500).json({ success: false, message: error.message });
   }
 };
