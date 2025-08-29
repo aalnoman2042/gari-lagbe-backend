@@ -48,12 +48,23 @@ const getRiderHistory = async (riderId: string) => {
   return await Ride.find({ rider: riderId }).sort({ requestedAt: -1 });
 };
 
+const  getRiderOngoingRides= async (token: string) => {
+    // Decode token to get rider ID
+    const decodedToken = jwt.verify(token, envVars.JWT_ACCESS_SECRET) as { id: string };
 
+    // Find ongoing rides for this rider
+    const ongoingRides = await Ride.find({
+      rider: decodedToken.id,
+      status: { $in: ["accepted", "picked_up", "in_transit"] },
+    }).sort({ requestedAt: -1 });
+
+    return ongoingRides;
+}
 
 export const rideServices = {
   requestRide,
   cancelRide,
 
   getRiderHistory,
-
+getRiderOngoingRides
 };

@@ -60,22 +60,22 @@ const updateUserService = async (userId: string, updateData: any) => {
   }
 
   // Trigger SOS
-  const triggerSOS= async (userId: string, rideId: string, location: { lat: number; lng: number }) => {
-    const user = await User.findById(userId);
-    if (!user) throw new Error("User not found");
-    if (!user.enableSOS) throw new Error("SOS is not enabled for this user");
+  // const triggerSOS= async (userId: string, rideId: string, location: { lat: number; lng: number }) => {
+  //   const user = await User.findById(userId);
+  //   if (!user) throw new Error("User not found");
+  //   if (!user.enableSOS) throw new Error("SOS is not enabled for this user");
 
-    // Here you can integrate:
-    // 1. emailjs / nodemailer for email
-    // 2. twilio / whatsapp-web.js for SMS/WhatsApp
-    // 3. send GPS link in message
-    // 4. log to DB if needed
+  //   // Here you can integrate:
+  //   // 1. emailjs / nodemailer for email
+  //   // 2. twilio / whatsapp-web.js for SMS/WhatsApp
+  //   // 3. send GPS link in message
+  //   // 4. log to DB if needed
 
-    // For now just a placeholder
-    console.log("SOS Triggered!", { userId, rideId, location, contacts: user.emergencyContacts });
+  //   // For now just a placeholder
+  //   console.log("SOS Triggered!", { userId, rideId, location, contacts: user.emergencyContacts });
 
-    return "Emergency contact notified successfully";
-  }
+  //   return "Emergency contact notified successfully";
+  // }
 
   // Get SOS info
   const getSOSInfo =  async (userId: string) => {
@@ -102,5 +102,5 @@ getMe,
 
   getSOSInfo,
   updateSOSContacts,
-  triggerSOS
+  // triggerSOS
 };

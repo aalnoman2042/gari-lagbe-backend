@@ -14,7 +14,9 @@ dotenv_1.default.config();
 const app = (0, express_1.default)();
 // Middleware
 const corsOptions = {
-    origin: 'http://localhost:5173', // Replace with your frontend URL
+    // origin: 'https://gari-lagbebd.netlify.app', // Replace with your frontend URL
+    // origin: 'https://gari-lagbe-frontend.vercel.app', // Replace with your frontend URL
+    origin: 'http://localhost:5173',
     credentials: true, // This is the key to allow cookies
 };
 app.use((0, cors_1.default)(corsOptions));

@@ -34,12 +34,32 @@ const getRiderHistory = async (req: Request, res: Response) => {
   res.json({ success: true, data: rides });
 };
 
+const getOngoingRides = async (req: Request, res: Response) => {
+ 
+  
+  try {
+    // Authorization token from header or cookie
+    const token = req.headers.authorization || req.cookies.accessToken as string;
+    if (!token) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({ success: false, message: "Unauthorized" });
+    }
+    // console.log(token);
+    
 
+    // Call service to fetch ongoing rides
+    const rides = await rideServices.getRiderOngoingRides(token as string);
+
+    res.status(StatusCodes.OK).json({ success: true, data: rides });
+  } catch (error: any) {
+    res.status(StatusCodes.BAD_REQUEST).json({ success: false, error: error.message });
+  }
+};
 
 export const RideControllers = {
   requestRide,
   cancelRide,
 
   getRiderHistory,
+  getOngoingRides
 
 };

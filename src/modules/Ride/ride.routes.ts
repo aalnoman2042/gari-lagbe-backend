@@ -8,4 +8,5 @@ export const rideRouter = express.Router();
 rideRouter.post("/request",authenticate,authorizeRider, RideControllers.requestRide);
 rideRouter.patch("/cancel/:id",authenticate,authorizeRider, RideControllers.cancelRide);
 rideRouter.get("/rider/:riderId/history",authenticate,authorizeRider, RideControllers.getRiderHistory);
+rideRouter.get("/ongoingRides", authenticate, RideControllers.getOngoingRides);
 

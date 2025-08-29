@@ -14,7 +14,7 @@ router.get("/me", User_controller_1.UserControllers.getMe);
 router.patch("/updateUser", User_controller_1.UserControllers.updateUser);
 router.patch(`/updateSOSContacts`, User_controller_1.UserControllers.updateSOSContacts);
 // Trigger SOS during an active ride
-router.patch("/triggerSOS", User_controller_1.UserControllers.triggerSOS);
+// router.patch("/triggerSOS", UserControllers.triggerSOS);
 // Get user SOS info (optional)
 router.get("/getSOSInfo", User_controller_1.UserControllers.getSOSInfo);
 exports.userRouter = router;

@@ -44,8 +44,19 @@ const cancelRide = (rideId, token) => __awaiter(void 0, void 0, void 0, function
 const getRiderHistory = (riderId) => __awaiter(void 0, void 0, void 0, function* () {
     return yield ride_model_1.Ride.find({ rider: riderId }).sort({ requestedAt: -1 });
 });
+const getRiderOngoingRides = (token) => __awaiter(void 0, void 0, void 0, function* () {
+    // Decode token to get rider ID
+    const decodedToken = jsonwebtoken_1.default.verify(token, env_1.envVars.JWT_ACCESS_SECRET);
+    // Find ongoing rides for this rider
+    const ongoingRides = yield ride_model_1.Ride.find({
+        rider: decodedToken.id,
+        status: { $in: ["accepted", "picked_up", "in_transit"] },
+    }).sort({ requestedAt: -1 });
+    return ongoingRides;
+});
 exports.rideServices = {
     requestRide,
     cancelRide,
     getRiderHistory,
+    getRiderOngoingRides
 };

@@ -121,7 +121,7 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 const updateSOSContacts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.body);
+    // console.log(req.body);
     const SOSContacts = req.body;
     const token = req.cookies.accessToken || req.headers.authorization;
     const decodedToken = jsonwebtoken_1.default.verify(token, env_1.envVars.JWT_ACCESS_SECRET);
@@ -144,19 +144,18 @@ const updateSOSContacts = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 // Trigger SOS during active ride
-const triggerSOS = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const token = req.cookies.accessToken || req.headers.authorization;
-    const decodedToken = jsonwebtoken_1.default.verify(token, env_1.envVars.JWT_ACCESS_SECRET);
-    try {
-        const userId = decodedToken.id;
-        const { rideId, location } = req.body; // location: {lat, lng}
-        const result = yield user_service_1.userServices.triggerSOS(userId, rideId, location);
-        res.status(200).json({ success: true, message: result });
-    }
-    catch (err) {
-        res.status(500).json({ success: false, error: err.message });
-    }
-});
+// const triggerSOS= async (req: Request, res: Response) => {
+//   const token = req.cookies.accessToken || (req.headers.authorization as string);
+// const decodedToken = jwt.verify(token, envVars.JWT_ACCESS_SECRET) as JwtPayload;
+//   try {
+//     const userId = decodedToken.id;
+//     const { rideId, location } = req.body; // location: {lat, lng}
+//     const result = await userServices.triggerSOS(userId, rideId, location);
+//     res.status(200).json({ success: true, message: result });
+//   } catch (err: any) {
+//     res.status(500).json({ success: false, error: err.message });
+//   }
+// }
 // Get user SOS info
 const getSOSInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.cookies.accessToken || req.headers.authorization;
@@ -177,5 +176,5 @@ exports.UserControllers = {
     updateUser,
     updateSOSContacts,
     getSOSInfo,
-    triggerSOS
+    // triggerSOS
 };

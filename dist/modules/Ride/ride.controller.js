@@ -35,8 +35,25 @@ const getRiderHistory = (req, res) => __awaiter(void 0, void 0, void 0, function
     const rides = yield ride_serivice_1.rideServices.getRiderHistory(req.params.riderId);
     res.json({ success: true, data: rides });
 });
+const getOngoingRides = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // Authorization token from header or cookie
+        const token = req.headers.authorization || req.cookies.accessToken;
+        if (!token) {
+            return res.status(http_status_codes_1.StatusCodes.UNAUTHORIZED).json({ success: false, message: "Unauthorized" });
+        }
+        // console.log(token);
+        // Call service to fetch ongoing rides
+        const rides = yield ride_serivice_1.rideServices.getRiderOngoingRides(token);
+        res.status(http_status_codes_1.StatusCodes.OK).json({ success: true, data: rides });
+    }
+    catch (error) {
+        res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json({ success: false, error: error.message });
+    }
+});
 exports.RideControllers = {
     requestRide,
     cancelRide,
     getRiderHistory,
+    getOngoingRides
 };

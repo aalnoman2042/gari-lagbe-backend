@@ -129,7 +129,7 @@ const updateUser = async (req: Request, res: Response) => {
 
 
  const updateSOSContacts= async (req: Request, res: Response) => {
-  console.log(req.body);
+  // console.log(req.body);
 
   const SOSContacts = req.body
   
@@ -159,22 +159,22 @@ const updateUser = async (req: Request, res: Response) => {
   }
 
   // Trigger SOS during active ride
-  const triggerSOS= async (req: Request, res: Response) => {
-    const token = req.cookies.accessToken || (req.headers.authorization as string);
-  const decodedToken = jwt.verify(token, envVars.JWT_ACCESS_SECRET) as JwtPayload;
+  // const triggerSOS= async (req: Request, res: Response) => {
+  //   const token = req.cookies.accessToken || (req.headers.authorization as string);
+  // const decodedToken = jwt.verify(token, envVars.JWT_ACCESS_SECRET) as JwtPayload;
 
     
-    try {
-      const userId = decodedToken.id;
-      const { rideId, location } = req.body; // location: {lat, lng}
+  //   try {
+  //     const userId = decodedToken.id;
+  //     const { rideId, location } = req.body; // location: {lat, lng}
 
-      const result = await userServices.triggerSOS(userId, rideId, location);
+  //     const result = await userServices.triggerSOS(userId, rideId, location);
 
-      res.status(200).json({ success: true, message: result });
-    } catch (err: any) {
-      res.status(500).json({ success: false, error: err.message });
-    }
-  }
+  //     res.status(200).json({ success: true, message: result });
+  //   } catch (err: any) {
+  //     res.status(500).json({ success: false, error: err.message });
+  //   }
+  // }
 
   // Get user SOS info
   const getSOSInfo= async (req: Request, res: Response) => {
@@ -203,6 +203,6 @@ getMe,
 
   updateSOSContacts,
   getSOSInfo,
-  triggerSOS
+  // triggerSOS
 
 };

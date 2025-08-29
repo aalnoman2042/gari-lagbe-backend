@@ -11,3 +11,4 @@ exports.rideRouter = express_1.default.Router();
 exports.rideRouter.post("/request", auth_middleware_1.authenticate, auth_middleware_1.authorizeRider, ride_controller_1.RideControllers.requestRide);
 exports.rideRouter.patch("/cancel/:id", auth_middleware_1.authenticate, auth_middleware_1.authorizeRider, ride_controller_1.RideControllers.cancelRide);
 exports.rideRouter.get("/rider/:riderId/history", auth_middleware_1.authenticate, auth_middleware_1.authorizeRider, ride_controller_1.RideControllers.getRiderHistory);
+exports.rideRouter.get("/ongoingRides", auth_middleware_1.authenticate, ride_controller_1.RideControllers.getOngoingRides);
